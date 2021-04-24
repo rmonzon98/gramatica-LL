@@ -1,4 +1,5 @@
-from  PostfixGen.infixtopostfix import *
+"""
+from PostfixGen.infixtopostfix import *
 from AFN.builder import ThompsonAlgorithm
 from Graph.graph import graph
 from Graph.graphDirect import graphDirect
@@ -60,4 +61,13 @@ if __name__ == "__main__":
         else: 
             correcta = True
             print("ADIOS, gracias por usarme :)")
-        
+"""    
+
+from LecturaATG.fileReader import read_file
+from EscrituraPy.fileWritter import createScanner
+
+if __name__ == "__main__":
+    archivo = input('Ingrese el nombre del archivo: ')
+    characters, keywords, tokens, nameATG = read_file(archivo)
+    createScanner(characters, keywords, tokens, nameATG)
+    
