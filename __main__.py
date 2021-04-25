@@ -62,12 +62,39 @@ if __name__ == "__main__":
             correcta = True
             print("ADIOS, gracias por usarme :)")
 """    
-
+from DirectAFD.AFD import *
 from LecturaATG.fileReader import read_file
 from EscrituraPy.fileWritter import createScanner
+from converter import *
+from AFDFixed.AFD import *
 
 if __name__ == "__main__":
     archivo = input('Ingrese el nombre del archivo: ')
     characters, keywords, tokens, nameATG = read_file(archivo)
-    createScanner(characters, keywords, tokens, nameATG)
+    print("-"*40,nameATG,"-"*40)
+    print("Characters:")
+    for i in characters:
+        print(chr(9)+i)
+    print("Keywords:")
+    for i in keywords:
+        print(chr(9)+i)
+    print("Tokens:")
+    for i in tokens:
+        print(chr(9)+i)
+    charactersDict = createCharactersDict(characters)
+    #print(charactersDict)
+    KeywordsDict = createKeywordsDict(charactersDict,keywords)
+    #print(KeywordsDict)
+    tokensDict, exceptions = createTokensDict(charactersDict, tokens)
+    expresion = convertOperators(tokensDict.get('ident'))
+    nuevaExpresionComputable = computableExpresion(expresion)
+    postfixexpNueva = infixaPostfix(nuevaExpresionComputable)+["#","_"]
+    labelsDstates, acceptance, acceptanceDict = buildAFD(postfixexpNueva)
+    newAFD = AFD(labelsDstates, acceptanceDict)
+    a = newAFD.getTransitions()
+    
+    #prueba = graphDirect(acceptance, labelsDstates, "AFD directo")
+    #createScanner(characters, keywords, tokens, nameATG)
+    
+
     

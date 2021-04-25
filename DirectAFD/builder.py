@@ -121,11 +121,19 @@ def buildAFD(expresion):
                 else:
                     labelsDstates.append((Dstates.index(i),l,Dstates.index(values)))
     #print(Dstates)
+    acceptanceDict = {}
     acceptance = []
+    #print("AFD DIRECTO ESTADOS PRUEBA")
+    contFixed = 0
+    #print(cont)
     for i in Dstates:
         #print(i)
         if cont-1 in i:
             acceptance.append(True)
+            acceptanceDict.update({contFixed:True})
         else:
             acceptance.append(False)
-    return labelsDstates, acceptance
+            acceptanceDict.update({contFixed:False})
+        contFixed = contFixed + 1
+    #print("TERMINA AFD DIRECTO ESTADOS PRUEBA")
+    return labelsDstates, acceptance, acceptanceDict

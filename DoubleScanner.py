@@ -1,0 +1,1 @@
+#Scanner created with Double.ATG data

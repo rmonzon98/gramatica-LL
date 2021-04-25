@@ -1,0 +1,1 @@
+#Scanner created with MyCOCOR.ATG data
