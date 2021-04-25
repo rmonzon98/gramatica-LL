@@ -3,8 +3,8 @@ COMPILER MyCOCOR
 
 CHARACTERS
 
-letter= "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz".
-digit= "0123456789".
+letter = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz".
+digit = "0123456789".
 
 cr = CHR(13).
 lf = CHR(10).
@@ -13,7 +13,7 @@ ignore = cr+lf+tab.
 comillas = CHR(34).
 stringletter = ANY-comillas-ignore.
 
-operadores ="+-=()[]{}|.<>".
+operadores = "+-=()[]{}|.<>".
 MyANY = ANY-operadores.
 
 TOKENS
@@ -26,8 +26,8 @@ charnumber = "CHR("digit{digit}")".
 charinterval = "CHR("digit{digit}")""..""CHR("digit{digit}")".
 
 nontoken = MyANY.
-startcode ="(.".
-endcode=".)".
+startcode = "(.".
+endcode = ".)".
 
 IGNORE SET ignore
 
