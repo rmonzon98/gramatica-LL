@@ -1,74 +1,9 @@
-"""
-from PostfixGen.infixtopostfix import *
-from AFN.builder import ThompsonAlgorithm
-from Graph.graph import graph
-from Graph.graphDirect import graphDirect
-from Subconjuntos.subsets import eCerradura, subsetsBuilder
-from Simulaciones.simulaciones import simulationNFA, simulationFDA
-from DirectAFD.builder import buildAFD
-
-if __name__ == "__main__":
-    correcta = False
-    while not correcta:
-        option = input("\nDesea: 1.Crear AFN y luego AFD 2.AFD directo salir 3.Salirn\n>>")
-        if not option == "3":
-            expresion = input ("\nIngrese la expresión, por favor: ")
-            if firstExpresion(expresion):
-                if option == "1":
-                    print("---------- CREACIÓN AFN Y AFD ----------")
-                    nuevaexpresion = computableExpresion(expresion)
-                    print("Expresion ingresada: ",expresion)
-                    print("Expresion entendible para computadora: ",nuevaexpresion)
-                    postfixexp = infixaPostfix(nuevaexpresion)
-                    print("Expresion en Postfix:",postfixexp)
-                    result = ThompsonAlgorithm(postfixexp)
-                    nfaDict = result.getDict()
-                    #print("Dict con el NFA resultante:\n",nfaDict)
-                    prueba = graph(postfixexp,result)
-                    transitions = prueba.createTransitions()
-                    prueba.graphic(transitions,"Thompson")
-                    s0 = result.getInitial()
-                    sf = result.getFinal()
-                    states = prueba.getStates()
-                    #print("Nodo inicial: ",s0,"\nNodo de aceptación/final: ",sf)
-                    alphabet = getAlphabet(expresion)
-                    dictTrans = result.getDict()
-                    subsets, numberSubsets, subsetsInfo, finalNodeInside = subsetsBuilder(alphabet, states, dictTrans, s0, sf)
-                    prueba.graphSubsets(subsets,numberSubsets,"Subconjuntos",finalNodeInside) 
-                    simulation = True
-                    while simulation:
-                        segundaExpresion = input ("\n------------- Nueva Simulación -------------\nIngrese la expresión a evaluar, por favor:\n>> ")
-                        resultSimNFA = simulationNFA(dictTrans, s0, sf, segundaExpresion, subsetsInfo, alphabet)
-                        print("Resultado de la simulación AFN: ", resultSimNFA)
-                        resultSimFDA = simulationFDA(subsets, numberSubsets, segundaExpresion, alphabet)
-                        print("Resultado de la simulación AFD: ", resultSimNFA)
-                        option = input ("¿Desea realizar otra simulacion?\n1.Sí   2.No\n>> ")
-                        if option == "2":
-                            simulation = False
-                elif option == "2":
-                    print("---------- CREACIÓN AFD DIRECTO ----------")
-                    expresion = convertOperators(expresion)
-                    print(expresion)
-                    nuevaExpresionComputable = computableExpresion(expresion)
-                    postfixexpNueva = infixaPostfix(nuevaExpresionComputable)+["#","_"]
-                    print("Expresion que con la que se hará el arbol sintactico ",postfixexpNueva)
-                    labelsDstates, acceptance = buildAFD(postfixexpNueva)
-                    prueba = graphDirect(acceptance, labelsDstates, "AFD directo")
-                else:
-                    print("Opcion equivocada")
-            else: 
-                print("La expresion tiene errores")
-        else: 
-            correcta = True
-            print("ADIOS, gracias por usarme :)")
-"""    
-from DirectAFD.AFD import *
+from EscrituraPy.fileWritter import *
 from LecturaATG.fileReader import read_file
-from EscrituraPy.fileWritter import createScanner
 from converter import *
-from AFDFixed.AFD import *
 
 if __name__ == "__main__":
+    
     archivo = input('Ingrese el nombre del archivo: ')
     characters, keywords, tokens, nameATG = read_file(archivo)
     print("-"*40,nameATG,"-"*40)
@@ -81,20 +16,29 @@ if __name__ == "__main__":
     print("Tokens:")
     for i in tokens:
         print(chr(9)+i)
-    charactersDict = createCharactersDict(characters)
-    #print(charactersDict)
-    KeywordsDict = createKeywordsDict(charactersDict,keywords)
-    #print(KeywordsDict)
-    tokensDict, exceptions = createTokensDict(charactersDict, tokens)
-    expresion = convertOperators(tokensDict.get('ident'))
-    nuevaExpresionComputable = computableExpresion(expresion)
-    postfixexpNueva = infixaPostfix(nuevaExpresionComputable)+["#","_"]
-    labelsDstates, acceptance, acceptanceDict = buildAFD(postfixexpNueva)
-    newAFD = AFD(labelsDstates, acceptanceDict)
-    a = newAFD.getTransitions()
+    line1 = "specialCharacters.update({'C' : set([67]), 'H' : set([72]), 'R' : set([82]), '(' : set([40]), ')' : set([41]), '/' : set([47]), '.' : set([46]), "+chr(34)+"'"+chr(34)+" : set([39])})"
+    line2 = "special.update({'C':'a', 'H':'b', 'R':'c', '(':'d', ')':'e', '/':'f', '.':'g', "+chr(34)+"'"+chr(34)+" :'h'})"
     
-    #prueba = graphDirect(acceptance, labelsDstates, "AFD directo")
-    #createScanner(characters, keywords, tokens, nameATG)
-    
-
-    
+    scanner = fileWritter(nameATG)
+    scanner.writeImport('from converter import *')
+    scanner.addArray("characters",characters)
+    scanner.addArray("keywords",keywords)
+    scanner.addArray("tokens",tokens)
+    scanner.addVariable("nameATG",nameATG)
+    scanner.writeSentence('specialCharacters = {}')
+    scanner.writeSentence('special = {}')
+    scanner.writeSentence(line1)
+    scanner.writeSentence(line2)
+    scanner.writeSentence('charactersDict = createCharactersDict(characters)')
+    scanner.writeSentence('charactersDict = createCharactersDict(characters)')
+    scanner.writeSentence('KeywordsDict = createKeywordsDict(charactersDict,keywords)')
+    scanner.writeSentence('tokensDict, exceptions = createTokensDict(charactersDict, tokens, specialCharacters, special)')
+    scanner.writeSentence('tokensArray = functionsCreator(tokensDict, charactersDict)')
+    scanner.writeSentence('keysCharacters = list(charactersDict.keys())')
+    scanner.writeFor('for i in tokensArray:')
+    scanner.writeSentence('i.correctTransitions(charactersDict, specialCharacters, special)')
+    scanner.substractTab()
+    scanner.writeSentence('print("-"*45+"ADF de los tokens"+"-"*45)')
+    scanner.writeFor('for i in tokensArray:')
+    scanner.writeSentence('print(i.getTransitions())')
+    print(".py escrito con exito")

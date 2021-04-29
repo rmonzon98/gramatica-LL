@@ -1,4 +1,4 @@
-COMPILER Aritmetica    
+COMPILER HexNumber    
 	
 (.
 /*--------------Scanner Especification----------*/
@@ -31,4 +31,4 @@ signnumber = [sign]digit{digit}.
 whitetoken = whitespace{whitespace}.
 
 
-END Aritmetica
+END HexNumber

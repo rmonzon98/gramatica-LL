@@ -1,1 +1,0 @@
-#Scanner created with Aritmetica.ATG data
