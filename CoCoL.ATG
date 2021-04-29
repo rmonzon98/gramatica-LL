@@ -1,9 +1,9 @@
-COMPILER MyCOCOR
+COMPILER Cocol
 (.//Especificacion de Funciones.)
 
 CHARACTERS
 
-letter = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz".
+letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
 digit = "0123456789".
 
 cr = CHR(13).
@@ -32,4 +32,4 @@ endcode = ".)".
 IGNORE SET ignore
 
 
-END MyCOCOR
+END Cocol

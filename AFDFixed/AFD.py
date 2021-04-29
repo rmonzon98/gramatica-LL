@@ -63,32 +63,44 @@ class Node:
         self.transitions = {}
     
     def correctTransitions(self, keys, values, specialCharacters, special):
-        key = list(self.transitions.keys())
-        specialValues = list(special.values())
-        specialKeysAscci = list(specialCharacters.values())
-        if len(key) == 1:
-            key = key[0]
-            temp = []
-            if type(key) == int:
-                for i in list(self.transitions.values()):
-                    for j in i:
-                        index = int(j)
-                        temp.append(values[index])
-            else:
-                index = specialValues.index(flag)
-                temp = specialKeysAscci[index]
-            self.transitions.update({key:temp})
-        else:
-            for i in key:
-                flag = list(self.transitions.get(i))
-                flag = flag[0]
-                if flag.isnumeric():
-                    temp = values[int(flag)]
-                    self.transitions.update({i:temp})
-                else:
-                    index = specialValues.index(flag)
+        try:
+            key = list(self.transitions.keys())
+            specialValues = list(special.values())
+            specialKeysAscci = list(specialCharacters.values())
+            if len(key) == 1:
+                key = key[0]
+                temp = []
+                valuesSub = list(self.transitions.values())[0]
+                valuesSub = valuesSub[0]
+                if valuesSub in ["a","b","c","d","e","f","g","h"]:
+                    index = specialValues.index(valuesSub)
                     temp = specialKeysAscci[index]
-                    self.transitions.update({i:temp})
+                else:
+                    valuesSub = int(valuesSub)
+                    if type(key) == int:
+                        for i in list(self.transitions.values()):
+                            for j in i:
+                                index = int(j)
+                                temp.append(values[index])
+                    
+                    else:
+                        index = specialValues.index(flag)
+                        temp = specialKeysAscci[index]
+                
+                self.transitions.update({key:temp})
+            else:
+                for i in key:
+                    flag = list(self.transitions.get(i))
+                    flag = flag[0]
+                    if flag.isnumeric():
+                        temp = values[int(flag)]
+                        self.transitions.update({i:temp})
+                    else:
+                        index = specialValues.index(flag)
+                        temp = specialKeysAscci[index]
+                        self.transitions.update({i:temp})
+        except:
+            pass
 
     def setNewTransition(self, nextNode, label):
         if nextNode in self.transitions:
