@@ -189,4 +189,4 @@ Clase encargada de escribir el scanner. El main le dice a esta clase lo que debe
 Al scanner se le pasa las transiciones y los estados de aceptación para que cree los automatas en base a eso. Lee el .txt y guarda toda su información en una variable como si fuera en un string. Esto para evaluar esa variable, caracter por caracter, e ir buscando tokens. Para esto se van formando strings con los caracteres que hayan sido aceptados. Por ejemplo con el ATG de HexNumber, si encuentra el 12 de primero podría ser un number pero si el siguiente caracter que encuentra es una H. La simulación da que el 12H no es un number pero sí es un Hexnumber. Una vez que haya finalizado de encontrar los tokens, busca entre el arreglo de keywords y si encuentra una keyword (en minusculas), cambia el valor del arreglo de tokens y lo vuelve una keyword.
 
 ## Anexos
-* Link a vídeo de Youtube de pruebas: https://youtu.be/uWOR17EG8W
+* Link a vídeo de Youtube de pruebas: https://youtu.be/5NRBRSo1NyE
