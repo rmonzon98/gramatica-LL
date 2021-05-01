@@ -1,18 +1,9 @@
-#Scanner created with Aritmetica.ATG data
+#Scanner created with Double.ATG data
 from AFDFixed.AFD import *
 
 
 exceptions = ['while','do','if','switch']
 adfArray = []
-ident= 'ident'
-temp = AFD(ident)
-tempidentAcceptance = {0: False, 1: True}
-
-temp.setDictAcceptance(tempidentAcceptance)
-tempidentTransitions = {0: {1: [{65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122}]}, 1: {1: [{65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122}, {48, 49, 50, 51, 52, 53, 54, 55, 56, 57}]}}
-
-temp.setTransition(tempidentTransitions)
-adfArray.append(temp)
 number= 'number'
 temp = AFD(number)
 tempnumberAcceptance = {0: False, 1: True}
@@ -21,6 +12,24 @@ temp.setDictAcceptance(tempnumberAcceptance)
 tempnumberTransitions = {0: {1: [{48, 49, 50, 51, 52, 53, 54, 55, 56, 57}]}, 1: {1: [{48, 49, 50, 51, 52, 53, 54, 55, 56, 57}]}}
 
 temp.setTransition(tempnumberTransitions)
+adfArray.append(temp)
+decnumber= 'decnumber'
+temp = AFD(decnumber)
+tempdecnumberAcceptance = {0: False, 1: False, 2: False, 3: True}
+
+temp.setDictAcceptance(tempdecnumberAcceptance)
+tempdecnumberTransitions = {0: {1: [{48, 49, 50, 51, 52, 53, 54, 55, 56, 57}]}, 1: {1: {48, 49, 50, 51, 52, 53, 54, 55, 56, 57}, 2: {46}}, 2: {3: [{48, 49, 50, 51, 52, 53, 54, 55, 56, 57}]}, 3: {3: [{48, 49, 50, 51, 52, 53, 54, 55, 56, 57}]}}
+
+temp.setTransition(tempdecnumberTransitions)
+adfArray.append(temp)
+white= 'white'
+temp = AFD(white)
+tempwhiteAcceptance = {0: False, 1: True}
+
+temp.setDictAcceptance(tempwhiteAcceptance)
+tempwhiteTransitions = {0: {1: [{32, 9, 10, 13}]}, 1: {1: [{32, 9, 10, 13}]}}
+
+temp.setTransition(tempwhiteTransitions)
 adfArray.append(temp)
 temp = ''
 name = ""

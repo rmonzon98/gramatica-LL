@@ -7,12 +7,7 @@
 NOTA: no tiene ponderación, pero se debe realizar un dubijo del grafo.
 
 
-Amigos, tienen que incluir en su proyecto 3 preguntas dentro del video. 
-La pregunta 1 es, ¿si quiero cambiar los operadores qué tendría qué hacer? ej. a* -> {a} o en definición de a+ -> a{a}. 
 
-Pregunta 2. ¿qué pasaría si cambiamos de un símbolo se cambiara a "una variable"? ej. en lugar de a+b tener set1+set2 y 
-que ese set1 a su vez tenga un conjunto de símbolos.
+29 201 hola2 r 20.3  20 2.12 -2.4  7h 7hsa s 7H  (.   .) CHR(2)
 
-Pregunta 3. ¿Cómo tendrían que cambiar su programa si quisieran que reciba definiciones regulares? ej. 
-Como el primer ejercicio del parcial, varias regex con variaciones de tokens.
 

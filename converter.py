@@ -3,24 +3,28 @@ from DirectAFD.builder import buildAFD
 from AFDFixed.AFD import *  
 from PostfixGen.infixtopostfix import *
 
+#Convierte elementos de una lista en un string
 def extractExp(expresion):
     newExpresion = ""
     for i in expresion:
         newExpresion = newExpresion + i
     return newExpresion
 
+#Convierte elementos de una lista en un string
 def word(expresion):
     newExpresion = ""
     for i in expresion:
         newExpresion = newExpresion + i
     return newExpresion
 
-def addOr(expresion):
+#Crea lista con los valores ascci 
+def asciiValuesList(expresion):
     newExpresion = []
     for i in expresion:
         newExpresion.append(ord(i))
     return newExpresion
 
+#Convierte lista a set
 def listToSet(listElements):
     temp = set()
     try:
@@ -30,6 +34,7 @@ def listToSet(listElements):
         temp.add(listElements)
     return temp
 
+#Función de calcular la diferencia entre dos sets
 def subsCharacters(data, charactersDict):
     keys = list(charactersDict.keys())
     values = list(charactersDict.values())
@@ -60,6 +65,7 @@ def subsCharacters(data, charactersDict):
             temp = result
     return temp
 
+#Función de calcular la suma entre dos sets
 def addCharacters(data, charactersDict):
     keys = list(charactersDict.keys())
     values = list(charactersDict.values())
@@ -80,6 +86,10 @@ def addCharacters(data, charactersDict):
             temp.add(i)
     return temp
 
+"""
+Calcula los valores ascii entre dos
+ejemplo: si tiene 0 en la primera posición y 255 en la segunda. crea un set con todos los valores que estan desde 0 hasta 255 
+"""
 def rangeCharacter(rangeCharacters):
     begin = rangeCharacters[0] 
     end = rangeCharacters[1] 
@@ -88,6 +98,7 @@ def rangeCharacter(rangeCharacters):
         temp.add(i)
     return temp
 
+#Leer README
 def createCharactersDict(characters):
     charactersDict = {}
     for i in characters:
@@ -114,7 +125,7 @@ def createCharactersDict(characters):
                 if count == 0:
                     count = 1
                 else:
-                    output.append(addOr(exp))
+                    output.append(asciiValuesList(exp))
                     exp = []
                     count = 0
             elif info[j] == "." and count == 0:
@@ -162,6 +173,7 @@ def createCharactersDict(characters):
         
     return charactersDict
 
+#Leer README
 def createKeywordsDict(charactersDict, keywords):
     keywordsDict = {}
     for i in keywords:
@@ -172,6 +184,7 @@ def createKeywordsDict(charactersDict, keywords):
         keywordsDict.update({name:info})
     return keywordsDict
 
+#Leer README
 def createTokensDict(charactersDict, tokens, specialCharacters, special):
     specialKeys = list(specialCharacters.keys())
     specialValues = list(special.values())
@@ -230,7 +243,7 @@ def createTokensDict(charactersDict, tokens, specialCharacters, special):
                 tokensDict.update({name:info})
     return tokensDict,exceptions
 
-
+#Leer README
 def functionsCreator(tokensDict, KeywordsDict):
     tokensArray = []
     for i in list(tokensDict.keys()):
@@ -238,6 +251,9 @@ def functionsCreator(tokensDict, KeywordsDict):
         nuevaExpresionComputable = computableExpresion(expresion)
         postfixexpNueva = infixaPostfix(nuevaExpresionComputable)+["#","_"]
         labelsDstates, acceptance, acceptanceDict = buildAFD(postfixexpNueva)
-        newAFD = AFD(labelsDstates, acceptanceDict, i)
+        newAFD = AFD(i)
+        newAFD.firstConstructor(labelsDstates, acceptanceDict)
+        print(labelsDstates)
+        print(acceptanceDict)
         tokensArray.append(newAFD)
     return tokensArray

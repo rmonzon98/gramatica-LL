@@ -1,7 +1,9 @@
 class AFD:
 
-    def __init__(self, states, acceptance, name):
+    def __init__(self, name):
         self.name = name
+
+    def firstConstructor(self, states, acceptance):
         self.listStates = states
         self.afdAcceptanceDict = acceptance
         self.states = []
@@ -22,15 +24,107 @@ class AFD:
                     j.setNewTransition(i[2],i[1])
         self.transitions = self.setInitialTransitions()
 
-    def getName(self):
-        return self.name
-        
     def correctTransitions(self, charactersDict, specialCharacters, special):
         keys = list(charactersDict.keys())
         values = list(charactersDict.values())
         for i in self.nodes:
             i.correctTransitions(keys,values,specialCharacters, special)
         self.transitions = self.getNewTransitions()
+    
+    def getValueAscii(self, character):
+        return ord(character)
+
+    def nextMove(self, initialNode, value):
+        #print("Next Move ",value,"(",chr(value),")")
+        possibleNodes = self.transitions.get(initialNode)
+        #print('possibleNodes ',possibleNodes)
+        found = False
+        if not(bool(possibleNodes)):
+            pass
+        else:
+            #print("Entra")
+            keys = list(possibleNodes.keys())
+            #print(keys)
+            values = list(possibleNodes.values())
+            #print(values)
+            if len(possibleNodes) == 1:
+                #print("largo 1")
+                values = values[0]
+                try:
+                    for i in values:                
+                        if value in i:
+                            """
+                            print("caracter encontrado")
+                            print("value ",value)
+                            print("values ",values[i])
+                            print(i)
+                            print(keys)
+                            """
+                            nextNode = keys[0]
+                            found = True
+                            #print("next node: ",nextNode)
+                            #print("valor del caracter: ",value)
+                            try:
+                                acceptance = self.afdAcceptanceDict.get(nextNode)
+                            except:
+                                acceptance = False
+                            return found, nextNode, acceptance, self.name
+                except:
+                    if value in values:
+                        """
+                        print("caracter encontrado")
+                        print("value ",value)
+                        print("values ",values[i])
+                        print(i)
+                        print(keys)
+                        """
+                        nextNode = keys[0]
+                        found = True
+                        #print("next node: ",nextNode)
+                        #print("valor del caracter: ",value)
+                        try:
+                            acceptance = self.afdAcceptanceDict.get(nextNode)
+                        except:
+                            acceptance = False
+                        return found, nextNode, acceptance, self.name
+            elif len(possibleNodes) == 2:
+                #print("Largo de dos")
+                #print(values)
+                #print(keys)
+                for i in range(0,len(values)):
+                    if value in values[i]:
+                        nextNode = keys[i]
+                        found = True
+                        try:
+                            acceptance = self.afdAcceptanceDict.get(nextNode)
+                        except:
+                            acceptance = False
+                        return found, nextNode, acceptance, self.name
+        if not(found):
+            return found, None, None, self.name
+    
+    def simulation(self, expresion):
+        node = 0
+        for i in expresion:
+            #print (i)
+            #print("transitions ",self.transitions)
+            #print("node ", node)
+            #print("name ", self.name)
+            found, node, acceptance, name = self.nextMove(node, self.getValueAscii(i))
+            if not(found):
+                #print("No se encontro ",i)
+                break
+
+        return found, acceptance, self.name
+            
+    def setInitialTransitions(self):
+        a = {}
+        for i in self.nodes:
+            a.update({i.getInitial():i.getTransitions()})
+        return a
+
+    def getName(self):
+        return self.name
 
     def getNewTransitions(self):
         a = {}
@@ -38,23 +132,20 @@ class AFD:
             a.update({i.getInitial():i.getTransitions()})
         return a
     
-    def simulation(self, initialNode,expresion):
-        for i in self.nodes:
-            if i.getInitial() == initialNode:
-                temp = i
-
-    def getDict(self):
-        return self.afdAcceptanceDict
-    
-    
     def getTransitions(self):
         return self.transitions
+    
+    def setNewTransition(self, newDict):
+        self.transitions = newDict
 
-    def setInitialTransitions(self):
-        a = {}
-        for i in self.nodes:
-            a.update({i.getInitial():i.getTransitions()})
-        return a
+    def getAcceptance(self):
+        return self.afdAcceptanceDict
+    
+    def setDictAcceptance(self, newDict):
+        self.afdAcceptanceDict = newDict
+    
+    def setTransition(self, newDict):
+        self.transitions = newDict
 
 class Node:
 
